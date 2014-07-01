@@ -8,6 +8,8 @@ image:
   feature: so-simple-sample-image-2.jpg
   credit: Michael Rose
   creditlink: http://mademistakes.com
+author:
+ name: Rahul Mishra
 comments: true
 share: true
 ---
