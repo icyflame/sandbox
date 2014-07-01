@@ -8,6 +8,8 @@ image:
   feature: so-simple-sample-image-5.jpg
   credit: Michael Rose
   creditlink: http://mademistakes.com
+author:
+  name: Sameer  
 comments: true
 share: true
 ---
