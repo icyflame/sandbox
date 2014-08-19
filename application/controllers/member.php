@@ -7,8 +7,8 @@ class Member extends CI_Controller{
 		$this->load->helper('url');
 		$this->load->library('session');
 		$this->load->library('table');		
-		$this->load->model('memberModel');
-		$this->data1 = $this->memberModel->getYearList();
+		$this->load->model('membermodel');
+		$this->data1 = $this->membermodel->getYearList();
 	}
 	private function accessCheck(){
 		$privilege = $this->session->userdata('privilege');
@@ -20,8 +20,8 @@ class Member extends CI_Controller{
 
 	public function index(){
 		if($this->accessCheck()){
-		$data = array('years'=>$this->memberModel->getYearList());
-		$notifications = $this->memberModel->numberOfNotifications();
+		$data = array('years'=>$this->membermodel->getYearList());
+		$notifications = $this->membermodel->numberOfNotifications();
 		$this->session->set_userdata('notifications',$notifications);
 		$this->load->view('templates/header',$data);
 		$this->load->view('templates/menu');
@@ -111,14 +111,14 @@ public function Paid($year){
 }}
 public function getProfile(){
 	$id=$this->input->get('id');
-	$data = $this->memberModel->getPrimaryInfo($id);
+	$data = $this->membermodel->getPrimaryInfo($id);
 
 	echo json_encode($data);
 }
 public function getTable($year,$list){
-	$this->data1 = $this->memberModel->getYearList();
+	$this->data1 = $this->membermodel->getYearList();
 		if(in_array(array('alumSince'=>$year),$this->data1)){// think of a get around
-			$data['table'] = $this->memberModel->getTable($year,$list);
+			$data['table'] = $this->membermodel->getTable($year,$list);
 			$data['year'] = $year;
 			$this->load->view('templates/header');
 			$this->load->view('templates/menu');
@@ -149,7 +149,7 @@ public function search(){
 
 	
 		if($this->session->userdata('privilege')){
-			$data = $this->memberModel->search();
+			$data = $this->membermodel->search();
 		
 						if($data){
 							$this->load->view('templates/header');
@@ -170,7 +170,7 @@ public function updateProfile(){
 	if($this->accessCheck()){
 		if($this->input->post('submit')){
 
-			if($msg = $this->memberModel->updateProfile()){
+			if($msg = $this->membermodel->updateProfile()){
 				header('Refresh:2,url='.$_SERVER["HTTP_REFERER"]);//security issues here
 				echo $msg;
 			}
@@ -187,7 +187,7 @@ public function updateSearch(){
 	if($this->accessCheck()){
 		$alumid = $this->input->get('alumid');
 		$search = $this->input->get('search');
-		$result = $this->memberModel->updateSearch($alumid,$search);
+		$result = $this->membermodel->updateSearch($alumid,$search);
 			echo $result;
 		}
 		else{
@@ -198,7 +198,7 @@ public function updateResponse(){
 	if($this->accessCheck()){
 		$alumid = $this->input->get('alumid');
 		$response = $this->input->get('response');
-		$result = $this->memberModel->updateResponse($alumid,$response);
+		$result = $this->membermodel->updateResponse($alumid,$response);
 			echo $result;
 		}
 		else{
@@ -212,7 +212,7 @@ public function updatePayment(){
 			$referenceNo =	$this->input->get('referenceNo');
 			$paymentAmt = $this->input->get('paymentAmt');
 			$remarks = $this->input->get('remarks');
-			$result = $this->memberModel->updatePayment($alumid,$dateofpayment,$referenceNo,$paymentAmt,$remarks);
+			$result = $this->membermodel->updatePayment($alumid,$dateofpayment,$referenceNo,$paymentAmt,$remarks);
 			
 				echo $result;
 			
@@ -227,7 +227,7 @@ public function updateRegister(){
 	if($this->accessCheck()){
 			$register  = $this->input->get('register');
 			$alumid = $this->input->get('alumid');
-			$result = $this->memberModel->updateRegister($alumid,$register);
+			$result = $this->membermodel->updateRegister($alumid,$register);
 			
 				echo $result;
 			
@@ -243,7 +243,7 @@ public function addCallDetail(){
 	date_default_timezone_set('Asia/Calcutta');
 	$date = date('Y-m-d');
 	$time = date('H:i:s');
-	echo $this->memberModel->addCallDetail($alumid,$date,$time);
+	echo $this->membermodel->addCallDetail($alumid,$date,$time);
 }
 
 public function updateCall(){
@@ -252,7 +252,7 @@ public function updateCall(){
 		$nexttime = $this->input->get('nexttime');
 		$callid = $this->input->get('callid');
 		$alumid = $this->input->get('alumid');
-		echo $this->memberModel->updateCall($remarks,$nextdate,$nexttime,$callid,$alumid);
+		echo $this->membermodel->updateCall($remarks,$nextdate,$nexttime,$callid,$alumid);
 	
 }
 public function updateMember(){
@@ -261,34 +261,34 @@ public function updateMember(){
 		$gender = $this->input->get('gender');
 		$relationship = $this->input->get('relationship');
 		$alumid = $this->input->get('alumid');
-		echo $this->memberModel->updateMember($name,$age,$gender,$relationship,$alumid);
+		echo $this->membermodel->updateMember($name,$age,$gender,$relationship,$alumid);
 	
 }
 public function removeAccompaniant(){
 		$memberid = $this->input->get('id');
 		$alumid = $this->input->get('alumid');
-		echo $this->memberModel->removeAccompaniant($memberid,$alumid);
+		echo $this->membermodel->removeAccompaniant($memberid,$alumid);
 
 }
 public function updateRemark(){
 	$remark = $this->input->get('remark');
 	$alumid = $this->input->get('alumid');
 
-	echo $this->memberModel->updateRemark($alumid,$remark);
+	echo $this->membermodel->updateRemark($alumid,$remark);
 }
 
 
 public function getNetworkingSummary($year){
 	
-	$userid = $this->memberModel->getUserId();
-	if($data =  $this->memberModel->getNetworkingSummary($userid,$year))
+	$userid = $this->membermodel->getUserId();
+	if($data =  $this->membermodel->getNetworkingSummary($userid,$year))
 		echo json_encode($data);
 	
 		//echo json_encode($data['msg']="boo");
 }
 public function getNotifications(){
 	if($this->accessCheck()){
-		$data['result'] = $this->memberModel->getNotifications();
+		$data['result'] = $this->membermodel->getNotifications();
 		$this->load->view('templates/header');
 		$this->load->view('templates/menu');
 		$this->load->view('templates/dummyMember',$data);
@@ -302,7 +302,7 @@ public function getNotifications(){
 public function notificationStatus(){
 	$id = $this->input->get('id');
 	
-	$this->memberModel->updateNotificationStatus($id);
+	$this->membermodel->updateNotificationStatus($id);
 	
 }
 

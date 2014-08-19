@@ -26,8 +26,8 @@ class Coordinator extends CI_Controller{
 			$data['memberList'] = $this->coordinatorModel->getMembers();
 			$notifications = $this->coordinatorModel->numberOfNotifications();
 			$this->session->set_userdata('notifications',$notifications);
-			$this->load->model('memberModel');
-			$data['years'] = $this->memberModel->getYearList();
+			$this->load->model('membermodel');
+			$data['years'] = $this->membermodel->getYearList();
 			$this->load->view('templates/header',$data);
 			$this->load->view('templates/menu');
 			$this->load->view('coordinators/home',$data);

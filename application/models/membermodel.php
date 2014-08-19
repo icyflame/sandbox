@@ -1,5 +1,5 @@
 <?php
-class MemberModel extends CI_Model{
+class membermodel extends CI_Model{
 
 	private $query1 = "SELECT alumni.alumid,alumni.Firstname,alumni.LastName,alumni.HallofResidence,alumni.alumSince,callhistory.nextdate,callhistory.nexttime FROM alumni JOIN status  ON alumni.alumid = status.alumid  LEFT JOIN callhistory ON callhistory.alumid = alumni.alumid WHERE";
 	private $queryP = "SELECT alumni.alumid,alumni.Firstname,alumni.LastName,alumni.HallofResidence,alumni.alumSince,payment.paymentAmt, payment.remarks FROM alumni JOIN status  ON alumni.alumid = status.alumid  JOIN payment ON payment.alumid = alumni.alumid WHERE";
