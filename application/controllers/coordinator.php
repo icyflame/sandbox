@@ -3,7 +3,7 @@ class Coordinator extends CI_Controller{
 	public function __construct(){
 		parent::__construct();
 		$this->load->library('session');
-		$this->load->model('coordinatorModel');
+		$this->load->model('coordinatormodel');
 		$this->load->helper('url');
 		$this->load->helper('form');
 		$this->load->library('form_validation');
@@ -23,8 +23,8 @@ class Coordinator extends CI_Controller{
 
 	public function index(){
 		if($this->accessCheck()){
-			$data['memberList'] = $this->coordinatorModel->getMembers();
-			$notifications = $this->coordinatorModel->numberOfNotifications();
+			$data['memberList'] = $this->coordinatormodel->getMembers();
+			$notifications = $this->coordinatormodel->numberOfNotifications();
 			$this->session->set_userdata('notifications',$notifications);
 			$this->load->model('membermodel');
 			$data['years'] = $this->membermodel->getYearList();
@@ -44,7 +44,7 @@ class Coordinator extends CI_Controller{
 	}
 	public function viewAs($name){
 		if($this->accessCheck()){
-		$username = $this->coordinatorModel->usernameFromName($name);
+		$username = $this->coordinatormodel->usernameFromName($name);
 		$this->session->set_userdata('alias',$username);
 		redirect('/member/index','refresh:2');
 	}else{
@@ -62,9 +62,9 @@ public function assignWork(){
 	if($this->accessCheck()){
 	if ($this->form_validation->run() == FALSE)
 		{	
-			$data['fromid'] = $this->coordinatorModel->getUnassignedAlum();
-			$data['toid'] = $this->coordinatorModel->getUnassignedAlum();
-			$data['members'] = $this->coordinatorModel->getMembers();
+			$data['fromid'] = $this->coordinatormodel->getUnassignedAlum();
+			$data['toid'] = $this->coordinatormodel->getUnassignedAlum();
+			$data['members'] = $this->coordinatormodel->getMembers();
 			$data['msg'] = "";
 			$this->load->view('templates/header');
 			$this->load->view('templates/menu');
@@ -77,9 +77,9 @@ public function assignWork(){
 			$to = $this->input->post('to');
 			if($to<$from){
 				$data["msg"] = "The To Id can not be smaller than the From Id";
-				$data['fromid'] = $this->coordinatorModel->getUnassignedAlum();
+				$data['fromid'] = $this->coordinatormodel->getUnassignedAlum();
 				$data['toid'] = $data['fromid'];
-				$data['members'] = $this->coordinatorModel->getMembers();
+				$data['members'] = $this->coordinatormodel->getMembers();
 				$this->load->view('templates/header');
 				$this->load->view('templates/menu');
 				$this->load->view('coordinators/assignWork',$data);
@@ -87,7 +87,7 @@ public function assignWork(){
 			}else{
 				$member = $this->input->post('member');
 				
-					if($this->coordinatorModel->assignWork($from,$to,$member)=="success"){
+					if($this->coordinatormodel->assignWork($from,$to,$member)=="success"){
 						header('Refresh:2, url="assignWork"');
 						echo "Work assigned. You are being redirected back";
 					}else{
@@ -106,7 +106,7 @@ public function assignWork(){
 }
 public function getNotifications(){
 	if($this->accessCheck()){
-		$data['result'] = $this->coordinatorModel->getNotifications();
+		$data['result'] = $this->coordinatormodel->getNotifications();
 		$this->load->view('templates/header');
 		$this->load->view('templates/menu');
 		$this->load->view('templates/dummyCoordinator',$data);
@@ -120,7 +120,7 @@ public function getNotifications(){
 
 public function showVerifyPayment(){
 	if($this->accessCheck()){
-		$data['data'] = $this->coordinatorModel->showVerifyPayment();
+		$data['data'] = $this->coordinatormodel->showVerifyPayment();
 		$this->load->view('templates/header');
 		$this->load->view('templates/menu');
 		$this->load->view('coordinators/verifyPayment',$data);
@@ -133,7 +133,7 @@ public function showVerifyPayment(){
 
 public function showVerifyRegistration(){
 	if($this->accessCheck()){
-		$data['data'] = $this->coordinatorModel->showVerifyRegistration();
+		$data['data'] = $this->coordinatormodel->showVerifyRegistration();
 		$this->load->view('templates/header');
 		$this->load->view('templates/menu');
 		$this->load->view('coordinators/verifyRegistration',$data);
@@ -145,17 +145,17 @@ public function showVerifyRegistration(){
 	}
 
 public function verifyRegistration($alumid){
-	if($this->coordinatorModel->verifyRegistration($alumid)=="success")
+	if($this->coordinatormodel->verifyRegistration($alumid)=="success")
 		echo "success";
 	
 }
 
 public function verifyPayment($alumid){
-	if($this->coordinatorModel->verifyPayment($alumid)=="success")
+	if($this->coordinatormodel->verifyPayment($alumid)=="success")
 		echo "success";
 }
 public function getNetworkingSummary($year){
-	if($data =  $this->coordinatorModel->getNetworkingSummary($year))
+	if($data =  $this->coordinatormodel->getNetworkingSummary($year))
 		echo json_encode($data);
 
 }
@@ -165,13 +165,13 @@ public function notificationStatus(){
 	$id = $this->input->get('id');
 	$this->session->set_userdata('notifications',$this->session->userdata('notifications')-1) ;
 
-	$this->coordinatorModel->updateNotificationStatus($id);
+	$this->coordinatormodel->updateNotificationStatus($id);
 	
 }
 
 public function registerMember(){
 	if($this->accessCheck()){
-		$data['data'] = $this->coordinatorModel->getUnregistered();
+		$data['data'] = $this->coordinatormodel->getUnregistered();
 		$this->load->view('templates/header');
 		$this->load->view('templates/menu');
 		$this->load->view('coordinators/registerMember',$data);
