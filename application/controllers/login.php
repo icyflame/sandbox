@@ -29,8 +29,8 @@ class Login extends CI_Controller{
 		}
 		else
 		{	
-			$this->load->model('loginModel');
-			$privilege = $this->loginModel->getPrivileges();
+			$this->load->model('loginmodel');
+			$privilege = $this->loginmodel->getPrivileges();
 			if($privilege=='-1'){
 				$message['message'] ="Username Password Mismatch";
 				$this->load->view('loginForm',$message);
@@ -43,7 +43,7 @@ class Login extends CI_Controller{
 	protected function redirectUser($privilege){
 		if(!$this->session->userdata('privilege')){
 		$username = $this->input->post('username');
-		$userid = $this->loginModel->getUserId($username);
+		$userid = $this->loginmodel->getUserId($username);
  		$sessData = array('username'=>$username,'privilege'=>$privilege,'userid'=>$userid);
 		$this->session->set_userdata($sessData);
 		}
@@ -100,13 +100,13 @@ class Login extends CI_Controller{
 		}
 		else
 		{	
-			$this->load->model('loginModel');
-			$usernameStatus = $this->loginModel->checkUserName();
+			$this->load->model('loginmodel');
+			$usernameStatus = $this->loginmodel->checkUserName();
 			if($usernameStatus=='-1'){
 				$message['message'] ="Username already exists";
 				$this->load->view('registerForm',$message);
 			}else{
-				if($this->loginModel->register()=="registered"){
+				if($this->loginmodel->register()=="registered"){
 					header('Refresh:3,url="index"');
 					echo "You have been successfully registered. You can login once your account is approved.You are being redirected back.";
 				}else{
