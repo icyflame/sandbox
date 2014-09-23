@@ -1,1 +1,0 @@
-<?php echo form_open('member/paymentDetail');?>

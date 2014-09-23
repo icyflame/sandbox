@@ -1,1 +1,0 @@
-<h2>Oops! bad query</h2>
