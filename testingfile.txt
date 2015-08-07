@@ -1,3 +1,7 @@
 I made some changes even to this line.
 
+<<<<<<< HEAD
 And then further changes.
+=======
+And then changed it without anything.
+>>>>>>> Changes made on Machine.
